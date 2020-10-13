@@ -8,7 +8,7 @@ namespace ClusterAnalysis_KMeans
         static void Main(string[] args)
         {
             KMeansAlgo algo = new KMeansAlgo();
-            algo.Compute();
+            algo.ComputeFirstVariant();
         }
     }
 }

@@ -31,16 +31,21 @@ namespace ClusterAnalysis_KMeans.Models
             new Point(7,9),
         };
 
-        public void Compute()
+        public void ComputeFirstVariant()
         {
             List<Centroid> centroids = GetInitialCentroids();
             List<Cluster> clustersPrev = null;
             List<Cluster> clustersCur = null;
             bool firstIter = true;
-
+            int iterCount = 0;
             do
             {
+                iterCount++;
                 int j = firstIter ? 3 : 0;
+                if (!firstIter)
+                {
+                    clustersPrev = new List<Cluster>(clustersCur);
+                }
                 for (int i = 0 + j; i < Points.Count; i++)
                 {
                     List<double> distances = new List<double>();
@@ -53,8 +58,9 @@ namespace ClusterAnalysis_KMeans.Models
                     centroids[minDistanceIndex] = new Centroid(Points[i], minDistanceCentroid);
                     Points[i].Cluster = (Cluster)minDistanceIndex + 1;
                 }
+                clustersCur = new List<Cluster>(Points.Select(x => x.Cluster));
                 firstIter = false;
-            } while (ExitCondition(clustersPrev, clustersCur));
+            } while (!ExitCondition(clustersPrev, clustersCur));
         }
 
         private List<Centroid> GetInitialCentroids()
