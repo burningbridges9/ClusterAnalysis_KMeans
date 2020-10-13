@@ -8,11 +8,8 @@ namespace ClusterAnalysis_KMeans.Models
 {
     public class KMeansAlgo
     {
-        public string IterNumberTextFilePath { get; set; } = @"C:\Users\Rustam\Documents\Visual Studio 2019\ClusterAnalysis_KMeans\ClusterAnalysis_KMeans\Data\Iteration.txt";
-        public string PointsXTextFilePath { get; set; } = @"C:\Users\Rustam\Documents\Visual Studio 2019\ClusterAnalysis_KMeans\ClusterAnalysis_KMeans\Data\PointsX.txt";
-        public string PointsYTextFilePath { get; set; } = @"C:\Users\Rustam\Documents\Visual Studio 2019\ClusterAnalysis_KMeans\ClusterAnalysis_KMeans\Data\PointsY.txt";
-        public string CentroidsXTextFilePath { get; set; } = @"C:\Users\Rustam\Documents\Visual Studio 2019\ClusterAnalysis_KMeans\ClusterAnalysis_KMeans\Data\CentroidsX.txt";
-        public string CentroidsYTextFilePath { get; set; } = @"C:\Users\Rustam\Documents\Visual Studio 2019\ClusterAnalysis_KMeans\ClusterAnalysis_KMeans\Data\CentroidsY.txt";
+        public Writer Writer { get; set; } = new Writer();
+
         public List<Point> Points { get; } = new List<Point>()
         {
             new Point(9,3),
@@ -31,9 +28,8 @@ namespace ClusterAnalysis_KMeans.Models
             new Point(7,9),
         };
 
-        public void ComputeFirstVariant()
+        public void Compute(List<Centroid> centroids)
         {
-            List<Centroid> centroids = GetInitialCentroids();
             List<Cluster> clustersPrev = null;
             List<Cluster> clustersCur = null;
             bool firstIter = true;
@@ -41,13 +37,15 @@ namespace ClusterAnalysis_KMeans.Models
             do
             {
                 iterCount++;
-                int j = firstIter ? 3 : 0;
                 if (!firstIter)
                 {
                     clustersPrev = new List<Cluster>(clustersCur);
                 }
-                for (int i = 0 + j; i < Points.Count; i++)
+                for (int i = 0; i < Points.Count; i++)
                 {
+                    if (firstIter && Points[i].Cluster != Cluster.Unknown)
+                        continue;
+
                     List<double> distances = new List<double>();
                     centroids.ForEach(x => distances.Add(x.Distance(Points[i])));
 
@@ -76,6 +74,29 @@ namespace ClusterAnalysis_KMeans.Models
             };
         }
 
+        private List<Centroid> GetInitialCentroids(int i, int j, int k)
+        {
+            Points[i].Cluster = Cluster.K1;
+            Points[j].Cluster = Cluster.K2;
+            Points[k].Cluster = Cluster.K3;
+            return new List<Centroid>()
+            {
+                new Centroid(Points[i]),
+                new Centroid(Points[j]),
+                new Centroid(Points[k]),
+            };
+        }
+
+        private List<Centroid> GetInitialCentroids(Point p1, Point p2, Point p3)
+        {
+            return new List<Centroid>()
+            {
+                new Centroid(p1),
+                new Centroid(p2),
+                new Centroid(p3),
+            };
+        }
+
         private bool ExitCondition(List<Cluster> cPrev, List<Cluster> cCur)
         {
             if (cPrev == null) // first iter
@@ -91,25 +112,25 @@ namespace ClusterAnalysis_KMeans.Models
             }
         }
 
-        void WriteToFileIter(int n)
+        public void Start(int startParam, int i = 0, int j = 0, int k = 0)
         {
-            using var sw = new StreamWriter(IterNumberTextFilePath, false, Encoding.Default);
-            sw.Write(n);
+            List<Centroid> centroids;
+            switch (startParam)
+            {
+                case 1:
+                    centroids = GetInitialCentroids();
+                    Compute(centroids);
+                    break;
+                case 2:
+                    centroids = GetInitialCentroids(i, j, k);
+                    Compute(centroids);
+                    break;
+                case 3:
+                    centroids = GetInitialCentroids(new Point(2, 2), new Point(5, 5), new Point(7, 7));
+                    Compute(centroids);
+                    break;
+            }
         }
-        void WriteToFileCentroids(List<Centroid> centroids)
-        {
-            WriteToFile(CentroidsXTextFilePath, centroids.Select(x => x.X).ToList());
-            WriteToFile(CentroidsYTextFilePath, centroids.Select(x => x.Y).ToList());
-        }
-        void WriteToFilePoints()
-        {
-            WriteToFile(PointsXTextFilePath, Points.Select(x => x.X).ToList());
-            WriteToFile(PointsYTextFilePath, Points.Select(x => x.Y).ToList());
-        }
-        void WriteToFile(string path, List<double> v)
-        {
-            using var sw = new StreamWriter(path, false, Encoding.Default);
-            v.ForEach(x => sw.Write(x + " "));
-        }
+
     }
 }
