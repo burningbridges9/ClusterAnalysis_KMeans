@@ -37,6 +37,7 @@ namespace ClusterAnalysis_KMeans.Models
             do
             {
                 iterCount++;
+                Writer.WriteToFileIter(iterCount);
                 if (!firstIter)
                 {
                     clustersPrev = new List<Cluster>(clustersCur);
@@ -58,6 +59,10 @@ namespace ClusterAnalysis_KMeans.Models
                 }
                 clustersCur = new List<Cluster>(Points.Select(x => x.Cluster));
                 firstIter = false;
+
+                Writer.WriteToFileCluster(1, Points.Where(p => p.Cluster == Cluster.K1).ToList(), centroids[0]);
+                Writer.WriteToFileCluster(2, Points.Where(p => p.Cluster == Cluster.K2).ToList(), centroids[1]);
+                Writer.WriteToFileCluster(3, Points.Where(p => p.Cluster == Cluster.K3).ToList(), centroids[2]);
             } while (!ExitCondition(clustersPrev, clustersCur));
         }
 

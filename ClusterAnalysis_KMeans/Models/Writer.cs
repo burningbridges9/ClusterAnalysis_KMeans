@@ -9,30 +9,35 @@ namespace ClusterAnalysis_KMeans.Models
     public class Writer
     {
         public string IterNumberTextFilePath { get; set; } = @"C:\Users\Rustam\Documents\Visual Studio 2019\ClusterAnalysis_KMeans\ClusterAnalysis_KMeans\Data\Iteration.txt";
-        public string PointsXTextFilePath { get; set; } = @"C:\Users\Rustam\Documents\Visual Studio 2019\ClusterAnalysis_KMeans\ClusterAnalysis_KMeans\Data\PointsX.txt";
-        public string PointsYTextFilePath { get; set; } = @"C:\Users\Rustam\Documents\Visual Studio 2019\ClusterAnalysis_KMeans\ClusterAnalysis_KMeans\Data\PointsY.txt";
-        public string CentroidsXTextFilePath { get; set; } = @"C:\Users\Rustam\Documents\Visual Studio 2019\ClusterAnalysis_KMeans\ClusterAnalysis_KMeans\Data\CentroidsX.txt";
-        public string CentroidsYTextFilePath { get; set; } = @"C:\Users\Rustam\Documents\Visual Studio 2019\ClusterAnalysis_KMeans\ClusterAnalysis_KMeans\Data\CentroidsY.txt";
+        public string Cluster1PointsPath { get; set; } = @"C:\Users\Rustam\Documents\Visual Studio 2019\ClusterAnalysis_KMeans\ClusterAnalysis_KMeans\Data\Cluster1Points.txt";
+        public string Cluster2PointsPath { get; set; } = @"C:\Users\Rustam\Documents\Visual Studio 2019\ClusterAnalysis_KMeans\ClusterAnalysis_KMeans\Data\Cluster2Points.txt";
+        public string Cluster3PointsPath { get; set; } = @"C:\Users\Rustam\Documents\Visual Studio 2019\ClusterAnalysis_KMeans\ClusterAnalysis_KMeans\Data\Cluster3Points.txt";
 
-        void WriteToFileIter(int n)
+        public void WriteToFileIter(int n)
         {
             using var sw = new StreamWriter(IterNumberTextFilePath, false, Encoding.Default);
             sw.Write(n);
         }
-        void WriteToFileCentroids(List<Centroid> centroids)
+
+        public void WriteToFileCluster(int i, List<Point> points, Centroid centroid)
         {
-            WriteToFile(CentroidsXTextFilePath, centroids.Select(x => x.X).ToList());
-            WriteToFile(CentroidsYTextFilePath, centroids.Select(x => x.Y).ToList());
-        }
-        void WriteToFilePoints(List<Point> points)
-        {
-            WriteToFile(PointsXTextFilePath, points.Select(x => x.X).ToList());
-            WriteToFile(PointsYTextFilePath, points.Select(x => x.Y).ToList());
-        }
-        void WriteToFile(string path, List<double> v)
-        {
-            using var sw = new StreamWriter(path, false, Encoding.Default);
-            v.ForEach(x => sw.Write(x + " "));
+            string p = "";
+            switch (i)
+            {
+                case 1:
+                    p = Cluster1PointsPath;
+                    break;
+                case 2:
+                    p = Cluster2PointsPath;
+                    break;
+                case 3:
+                    p = Cluster3PointsPath;
+                    break;
+            }
+            using var sw = new StreamWriter(p, false, Encoding.Default);
+            points.ForEach(x => sw.Write(x.X + " ")); sw.Write(centroid.X);
+            sw.Write('\n');
+            points.ForEach(x => sw.Write(x.Y + " ")); sw.Write(centroid.Y);
         }
     }
 }
