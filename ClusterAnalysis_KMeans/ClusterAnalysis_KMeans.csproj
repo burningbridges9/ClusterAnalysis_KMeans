@@ -3,6 +3,20 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Platforms>AnyCPU;x86;x64</Platforms>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="Kmeans_disp">
+      <HintPath>3rdParty\Kmeans_disp.dll</HintPath>
+    </Reference>
+    <Reference Include="MWArray">
+      <HintPath>..\..\..\..\..\..\Windows\assembly\GAC_MSIL\MWArray\2.15.1.0__e1d84a0da19db86f\MWArray.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 
 </Project>

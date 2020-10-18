@@ -1,8 +1,6 @@
-﻿using System;
+﻿using Kmeans_disp;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace ClusterAnalysis_KMeans.Models
 {
@@ -30,10 +28,12 @@ namespace ClusterAnalysis_KMeans.Models
 
         public void Compute(List<Centroid> centroids)
         {
+            Plotter plotter = new Plotter();
             List<Cluster> clustersPrev = null;
             List<Cluster> clustersCur = null;
             bool firstIter = true;
             int iterCount = 0;
+            Writer.WriteToReportFile("", false);
             do
             {
                 iterCount++;
@@ -42,27 +42,54 @@ namespace ClusterAnalysis_KMeans.Models
                 {
                     clustersPrev = new List<Cluster>(clustersCur);
                 }
+                string msg = $"Iteration {iterCount}: \n";
+                Writer.WriteToReportFile(msg);
                 for (int i = 0; i < Points.Count; i++)
                 {
-                    if (firstIter && Points[i].Cluster != Cluster.Unknown)
-                        continue;
-
+                    Writer.WriteToReportFile($"Customer {i + 1}\n");
                     List<double> distances = new List<double>();
-                    centroids.ForEach(x => distances.Add(x.Distance(Points[i])));
+
+                    var centroidsMsg = "";
+                    for (int j = 0; j < centroids.Count; j++)
+                    {
+                        var distance = centroids[j].Distance(Points[i]);
+                        centroidsMsg += $"Centroid {j + 1} = {centroids[j].ToString()}, Distance = {distance}\n";
+                        distances.Add(distance);
+                    }
 
                     var minDistance = distances.Min();
                     var minDistanceIndex = distances.IndexOf(minDistance);
                     var minDistanceCentroid = centroids[minDistanceIndex];
 
+                    Writer.WriteToReportFile(centroidsMsg);
+                    Writer.WriteToReportFile($"Min distance = {minDistance} at centroid {minDistanceIndex} = {minDistanceCentroid.ToString()}\n");
+
                     centroids[minDistanceIndex] = new Centroid(Points[i], minDistanceCentroid);
                     Points[i].Cluster = (Cluster)minDistanceIndex + 1;
+
+                    Writer.WriteToReportFile($"New centroid = {centroids[minDistanceIndex].ToString()}\n\n");
+                    
                 }
                 clustersCur = new List<Cluster>(Points.Select(x => x.Cluster));
                 firstIter = false;
 
+                var iterResult = $"\nIteration results:\n" +
+                    $"Cluster 1:\n" +
+                    $"Points: {string.Join("; ", Points.Where(x => x.Cluster == Cluster.K1).Select(x => x.ToString()))}\n" +
+                    $"Centroid: {centroids[0]}\n" +
+                    $"Cluster 2:\n" +
+                    $"Points: {string.Join(';', Points.Where(x => x.Cluster == Cluster.K2).Select(x => x.ToString()))}\n" +
+                    $"Centroid: {centroids[1]}\n" +
+                    $"Cluster 3:\n" +
+                    $"Points: {string.Join(';', Points.Where(x => x.Cluster == Cluster.K3).Select(x => x.ToString()))}\n" +
+                    $"Centroid: {centroids[2]}\n\n\n"
+                    ;
+                Writer.WriteToReportFile(iterResult);
+
                 Writer.WriteToFileCluster(1, Points.Where(p => p.Cluster == Cluster.K1).ToList(), centroids[0]);
                 Writer.WriteToFileCluster(2, Points.Where(p => p.Cluster == Cluster.K2).ToList(), centroids[1]);
                 Writer.WriteToFileCluster(3, Points.Where(p => p.Cluster == Cluster.K3).ToList(), centroids[2]);
+                plotter.Kmeans_disp();
             } while (!ExitCondition(clustersPrev, clustersCur));
         }
 
@@ -127,7 +154,7 @@ namespace ClusterAnalysis_KMeans.Models
                     Compute(centroids);
                     break;
                 case 2:
-                    centroids = GetInitialCentroids(i, j, k);
+                    centroids = GetInitialCentroids(new Point(2, 3), new Point(7, 9), new Point(7, 3));// GetInitialCentroids(i, j, k);
                     Compute(centroids);
                     break;
                 case 3:

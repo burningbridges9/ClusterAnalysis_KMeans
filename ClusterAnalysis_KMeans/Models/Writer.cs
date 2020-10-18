@@ -12,6 +12,13 @@ namespace ClusterAnalysis_KMeans.Models
         public string Cluster1PointsPath { get; set; } = @"C:\Users\Rustam\Documents\Visual Studio 2019\ClusterAnalysis_KMeans\ClusterAnalysis_KMeans\Data\Cluster1Points.txt";
         public string Cluster2PointsPath { get; set; } = @"C:\Users\Rustam\Documents\Visual Studio 2019\ClusterAnalysis_KMeans\ClusterAnalysis_KMeans\Data\Cluster2Points.txt";
         public string Cluster3PointsPath { get; set; } = @"C:\Users\Rustam\Documents\Visual Studio 2019\ClusterAnalysis_KMeans\ClusterAnalysis_KMeans\Data\Cluster3Points.txt";
+        public string ResultsPath { get; set; } = @"C:\Users\Rustam\Documents\Visual Studio 2019\ClusterAnalysis_KMeans\ClusterAnalysis_KMeans\Data\Results.txt";
+
+        public void WriteToReportFile(string msg, bool append = true)
+        {
+            using var sw = new StreamWriter(ResultsPath, append, Encoding.Default);
+            sw.Write(msg);
+        }
 
         public void WriteToFileIter(int n)
         {

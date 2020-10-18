@@ -9,7 +9,7 @@ namespace ClusterAnalysis_KMeans
         {
             System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
             KMeansAlgo algo = new KMeansAlgo();
-            algo.Start(1);
+            algo.Start(3);
         }
     }
 }
