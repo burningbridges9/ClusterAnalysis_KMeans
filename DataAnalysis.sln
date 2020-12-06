@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.30320.27
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClusterAnalysis_KMeans", "ClusterAnalysis_KMeans\ClusterAnalysis_KMeans.csproj", "{664D2F7A-817E-464C-8A4A-93804E3B3834}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeSeries", "TimeSeries\TimeSeries.csproj", "{F4FE7D67-BF2E-4642-8C28-320C378AFBDB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,18 @@ Global
 		{664D2F7A-817E-464C-8A4A-93804E3B3834}.Release|x64.Build.0 = Release|x64
 		{664D2F7A-817E-464C-8A4A-93804E3B3834}.Release|x86.ActiveCfg = Release|x86
 		{664D2F7A-817E-464C-8A4A-93804E3B3834}.Release|x86.Build.0 = Release|x86
+		{F4FE7D67-BF2E-4642-8C28-320C378AFBDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4FE7D67-BF2E-4642-8C28-320C378AFBDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4FE7D67-BF2E-4642-8C28-320C378AFBDB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F4FE7D67-BF2E-4642-8C28-320C378AFBDB}.Debug|x64.Build.0 = Debug|Any CPU
+		{F4FE7D67-BF2E-4642-8C28-320C378AFBDB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F4FE7D67-BF2E-4642-8C28-320C378AFBDB}.Debug|x86.Build.0 = Debug|Any CPU
+		{F4FE7D67-BF2E-4642-8C28-320C378AFBDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4FE7D67-BF2E-4642-8C28-320C378AFBDB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4FE7D67-BF2E-4642-8C28-320C378AFBDB}.Release|x64.ActiveCfg = Release|Any CPU
+		{F4FE7D67-BF2E-4642-8C28-320C378AFBDB}.Release|x64.Build.0 = Release|Any CPU
+		{F4FE7D67-BF2E-4642-8C28-320C378AFBDB}.Release|x86.ActiveCfg = Release|Any CPU
+		{F4FE7D67-BF2E-4642-8C28-320C378AFBDB}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
